@@ -69,7 +69,7 @@ void xferbuf_free ( struct xfer_buffer *xferbuf ) {
  * @v len		Required minimum size
  * @ret rc		Return status code
  */
-static int xferbuf_ensure_size ( struct xfer_buffer *xferbuf, size_t len ) {
+static int xferbuf_ensure_size ( struct xfer_buffer *xferbuf, uint64_t len ) {
 	int rc;
 
 	/* If buffer is already large enough, do nothing */
@@ -79,7 +79,7 @@ static int xferbuf_ensure_size ( struct xfer_buffer *xferbuf, size_t len ) {
 	/* Extend buffer */
 	if ( ( rc = xferbuf->op->realloc ( xferbuf, len ) ) != 0 ) {
 		DBGC ( xferbuf, "XFERBUF %p could not extend buffer to "
-		       "%zd bytes: %s\n", xferbuf, len, strerror ( rc ) );
+		       "%lld bytes: %s\n", xferbuf, len, strerror ( rc ) );
 		return rc;
 	}
 	xferbuf->len = len;
@@ -95,9 +95,9 @@ static int xferbuf_ensure_size ( struct xfer_buffer *xferbuf, size_t len ) {
  * @v data		Data to write
  * @v len		Length of data
  */
-int xferbuf_write ( struct xfer_buffer *xferbuf, size_t offset,
+int xferbuf_write ( struct xfer_buffer *xferbuf, uint64_t offset,
 		    const void *data, size_t len ) {
-	size_t max_len;
+	uint64_t max_len;
 	int rc;
 
 	/* Check for overflow */
@@ -125,7 +125,7 @@ int xferbuf_write ( struct xfer_buffer *xferbuf, size_t offset,
  * @v data		Data to write
  * @v len		Length of data
  */
-int xferbuf_read ( struct xfer_buffer *xferbuf, size_t offset,
+int xferbuf_read ( struct xfer_buffer *xferbuf, uint64_t offset,
 		   void *data, size_t len ) {
 
 	/* Check that read is within buffer range */
@@ -152,7 +152,7 @@ int xferbuf_read ( struct xfer_buffer *xferbuf, size_t offset,
 int xferbuf_deliver ( struct xfer_buffer *xferbuf, struct io_buffer *iobuf,
 		      struct xfer_metadata *meta ) {
 	size_t len = iob_len ( iobuf );
-	size_t pos;
+	uint64_t pos;
 	int rc;
 
 	/* Start profiling */
@@ -184,7 +184,7 @@ int xferbuf_deliver ( struct xfer_buffer *xferbuf, struct io_buffer *iobuf,
  * @v len		New length (or zero to free buffer)
  * @ret rc		Return status code
  */
-static int xferbuf_malloc_realloc ( struct xfer_buffer *xferbuf, size_t len ) {
+static int xferbuf_malloc_realloc ( struct xfer_buffer *xferbuf, uint64_t len ) {
 	void *new_data;
 
 	new_data = realloc ( xferbuf->data, len );
@@ -202,7 +202,7 @@ static int xferbuf_malloc_realloc ( struct xfer_buffer *xferbuf, size_t len ) {
  * @v data		Data to copy
  * @v len		Length of data
  */
-static void xferbuf_malloc_write ( struct xfer_buffer *xferbuf, size_t offset,
+static void xferbuf_malloc_write ( struct xfer_buffer *xferbuf, uint64_t offset,
 				   const void *data, size_t len ) {
 
 	memcpy ( ( xferbuf->data + offset ), data, len );
@@ -216,7 +216,7 @@ static void xferbuf_malloc_write ( struct xfer_buffer *xferbuf, size_t offset,
  * @v data		Data to read
  * @v len		Length of data
  */
-static void xferbuf_malloc_read ( struct xfer_buffer *xferbuf, size_t offset,
+static void xferbuf_malloc_read ( struct xfer_buffer *xferbuf, uint64_t offset,
 				  void *data, size_t len ) {
 
 	memcpy ( data, ( xferbuf->data + offset ), len );
@@ -236,7 +236,7 @@ struct xfer_buffer_operations xferbuf_malloc_operations = {
  * @v len		New length (or zero to free buffer)
  * @ret rc		Return status code
  */
-static int xferbuf_umalloc_realloc ( struct xfer_buffer *xferbuf, size_t len ) {
+static int xferbuf_umalloc_realloc ( struct xfer_buffer *xferbuf, uint64_t len ) {
 	userptr_t *udata = xferbuf->data;
 	userptr_t new_udata;
 
@@ -255,8 +255,9 @@ static int xferbuf_umalloc_realloc ( struct xfer_buffer *xferbuf, size_t len ) {
  * @v data		Data to copy
  * @v len		Length of data
  */
-static void xferbuf_umalloc_write ( struct xfer_buffer *xferbuf, size_t offset,
-				    const void *data, size_t len ) {
+static void xferbuf_umalloc_write ( struct xfer_buffer *xferbuf,
+				    uint64_t offset, const void *data,
+				    size_t len ) {
 	userptr_t *udata = xferbuf->data;
 
 	copy_to_user ( *udata, offset, data, len );
@@ -270,8 +271,8 @@ static void xferbuf_umalloc_write ( struct xfer_buffer *xferbuf, size_t offset,
  * @v data		Data to read
  * @v len		Length of data
  */
-static void xferbuf_umalloc_read ( struct xfer_buffer *xferbuf, size_t offset,
-				   void *data, size_t len ) {
+static void xferbuf_umalloc_read ( struct xfer_buffer *xferbuf,
+				   uint64_t offset, void *data, size_t len ) {
 	userptr_t *udata = xferbuf->data;
 
 	copy_from_user ( data, *udata, offset, len );

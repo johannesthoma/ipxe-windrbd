@@ -34,7 +34,7 @@ struct xfer_metadata {
 	 * relative offset of zero, i.e. no offset from the current
 	 * position.)
 	 */
-	off_t offset;
+	int64_t offset;
 	/** Source socket address, or NULL */
 	struct sockaddr *src;
 	/** Destination socket address, or NULL */
@@ -102,7 +102,7 @@ extern int xfer_vprintf ( struct interface *intf,
 			  const char *format, va_list args );
 extern int __attribute__ (( format ( printf, 2, 3 ) ))
 xfer_printf ( struct interface *intf, const char *format, ... );
-extern int xfer_seek ( struct interface *intf, off_t offset );
+extern int xfer_seek ( struct interface *intf, int64_t offset );
 extern int xfer_check_order ( struct xfer_metadata *meta, size_t *pos,
 			      size_t len );
 

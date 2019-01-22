@@ -20,9 +20,9 @@ struct xfer_buffer {
 	/** Data */
 	void *data;
 	/** Size of data */
-	size_t len;
+	uint64_t len;
 	/** Current offset within data */
-	size_t pos;
+	uint64_t pos;
 	/** Data transfer buffer operations */
 	struct xfer_buffer_operations *op;
 };
@@ -35,7 +35,7 @@ struct xfer_buffer_operations {
 	 * @v len		New length (or zero to free buffer)
 	 * @ret rc		Return status code
 	 */
-	int ( * realloc ) ( struct xfer_buffer *xferbuf, size_t len );
+	int ( * realloc ) ( struct xfer_buffer *xferbuf, uint64_t len );
 	/** Write data to buffer
 	 *
 	 * @v xferbuf		Data transfer buffer
@@ -47,7 +47,7 @@ struct xfer_buffer_operations {
 	 * memcpy()-like operation: the caller is responsible for
 	 * ensuring that the write does not exceed the buffer length.
 	 */
-	void ( * write ) ( struct xfer_buffer *xferbuf, size_t offset,
+	void ( * write ) ( struct xfer_buffer *xferbuf, uint64_t offset,
 			   const void *data, size_t len );
 	/** Read data from buffer
 	 *
@@ -60,7 +60,7 @@ struct xfer_buffer_operations {
 	 * memcpy()-like operation: the caller is responsible for
 	 * ensuring that the read does not exceed the buffer length.
 	 */
-	void ( * read ) ( struct xfer_buffer *xferbuf, size_t offset,
+	void ( * read ) ( struct xfer_buffer *xferbuf, uint64_t offset,
 			  void *data, size_t len );
 };
 
@@ -90,9 +90,9 @@ xferbuf_umalloc_init ( struct xfer_buffer *xferbuf, userptr_t *data ) {
 }
 
 extern void xferbuf_free ( struct xfer_buffer *xferbuf );
-extern int xferbuf_write ( struct xfer_buffer *xferbuf, size_t offset,
+extern int xferbuf_write ( struct xfer_buffer *xferbuf, uint64_t offset,
 			   const void *data, size_t len );
-extern int xferbuf_read ( struct xfer_buffer *xferbuf, size_t offset,
+extern int xferbuf_read ( struct xfer_buffer *xferbuf, uint64_t offset,
 			  void *data, size_t len );
 extern int xferbuf_deliver ( struct xfer_buffer *xferbuf,
 			     struct io_buffer *iobuf,

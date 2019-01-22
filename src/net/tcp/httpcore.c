@@ -591,7 +591,7 @@ int http_open ( struct interface *xfer, struct http_method *method,
 	struct uri request_host;
 	size_t request_uri_len;
 	size_t request_host_len;
-	size_t content_len;
+	uint64_t content_len;
 	char *request_uri_string;
 	char *request_host_string;
 	void *content_data;
@@ -936,7 +936,7 @@ static int http_format_range ( struct http_transaction *http,
 
 	/* Construct range, if applicable */
 	if ( http->request.range.len ) {
-		return snprintf ( buf, len, "bytes=%zd-%zd",
+		return snprintf ( buf, len, "bytes=%lld-%lld",
 				  http->request.range.start,
 				  ( http->request.range.start +
 				    http->request.range.len - 1 ) );
@@ -1345,7 +1345,7 @@ static int http_parse_content_length ( struct http_transaction *http,
 	char *endp;
 
 	/* Parse length */
-	http->response.content.len = strtoul ( line, &endp, 10 );
+	http->response.content.len = strtoull ( line, &endp, 10 );
 	if ( *endp != '\0' ) {
 		DBGC ( http, "HTTP %p invalid Content-Length \"%s\"\n",
 		       http, line );
