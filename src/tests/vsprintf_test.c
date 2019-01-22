@@ -100,6 +100,9 @@ static void vsprintf_test_exec ( void ) {
 	snprintf_ok ( 16, "-072", "%04d", -72 );
 	snprintf_ok ( 16, "4", "%zd", sizeof ( uint32_t ) );
 	snprintf_ok ( 16, "123456789", "%d", 123456789 );
+	snprintf_ok ( 64, "123456789123456789", "%lld", 123456789123456789LL );
+	snprintf_ok ( 64, "-123456789123456789", "%lld",
+			   -123456789123456789LL );
 
 	/* Realistic combinations */
 	snprintf_ok ( 64, "DBG 0x1234 thingy at 0x0003f0c0+0x5c\n",

@@ -130,7 +130,7 @@ static char * format_hex ( char *end, unsigned long long num, int width,
  * There must be enough space in the buffer to contain the largest
  * number that this function can format.
  */
-static char * format_decimal ( char *end, signed long num, int width,
+static char * format_decimal ( char *end, signed long long num, int width,
 			       int flags ) {
 	char *ptr = end;
 	int negative = 0;
@@ -283,9 +283,11 @@ size_t vcprintf ( struct printf_context *ctx, const char *fmt, va_list args ) {
 			}
 			ptr = format_hex ( ptr, hex, width, flags );
 		} else if ( ( *fmt == 'd' ) || ( *fmt == 'i' ) ){
-			signed long decimal;
+			signed long long decimal;
 
-			if ( *length >= sizeof ( signed long ) ) {
+			if ( *length >= sizeof ( signed long long ) ) {
+				decimal = va_arg ( args, signed long long );
+			} else if ( *length >= sizeof ( signed long ) ) {
 				decimal = va_arg ( args, signed long );
 			} else {
 				decimal = va_arg ( args, signed int );
