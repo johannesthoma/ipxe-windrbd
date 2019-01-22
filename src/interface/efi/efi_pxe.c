@@ -317,7 +317,7 @@ static int efi_pxe_ip_filter ( struct efi_pxe *pxe, EFI_IP_ADDRESS *ip ) {
  * @ret rc		Return status code
  */
 static int efi_pxe_buf_realloc ( struct xfer_buffer *xferbuf __unused,
-				 size_t len __unused ) {
+				 uint64_t len __unused ) {
 
 	/* Can never reallocate: return EFI_BUFFER_TOO_SMALL */
 	return -ERANGE;
@@ -331,7 +331,7 @@ static int efi_pxe_buf_realloc ( struct xfer_buffer *xferbuf __unused,
  * @v data		Data to copy
  * @v len		Length of data
  */
-static void efi_pxe_buf_write ( struct xfer_buffer *xferbuf, size_t offset,
+static void efi_pxe_buf_write ( struct xfer_buffer *xferbuf, uint64_t offset,
 				const void *data, size_t len ) {
 
 	/* Copy data to buffer */

@@ -46,7 +46,7 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
  * @ret rc		Return status code
  */
 static int blktrans_xferbuf_realloc ( struct xfer_buffer *xferbuf,
-				      size_t len ) {
+				      uint64_t len ) {
 	struct block_translator *blktrans =
 		container_of ( xferbuf, struct block_translator, xferbuf );
 
@@ -72,7 +72,7 @@ static int blktrans_xferbuf_realloc ( struct xfer_buffer *xferbuf,
  * @v data		Data to copy
  * @v len		Length of data
  */
-static void blktrans_xferbuf_write ( struct xfer_buffer *xferbuf, size_t offset,
+static void blktrans_xferbuf_write ( struct xfer_buffer *xferbuf, uint64_t offset,
 				     const void *data, size_t len ) {
 	struct block_translator *blktrans =
 		container_of ( xferbuf, struct block_translator, xferbuf );
@@ -98,8 +98,8 @@ static void blktrans_xferbuf_write ( struct xfer_buffer *xferbuf, size_t offset,
  * @v data		Data to read
  * @v len		Length of data
  */
-static void blktrans_xferbuf_read ( struct xfer_buffer *xferbuf, size_t offset,
-				    void *data, size_t len ) {
+static void blktrans_xferbuf_read ( struct xfer_buffer *xferbuf,
+				    uint64_t offset, void *data, size_t len ) {
 	struct block_translator *blktrans =
 		container_of ( xferbuf, struct block_translator, xferbuf );
 
@@ -220,7 +220,7 @@ static struct interface_descriptor blktrans_xfer_desc =
  * @v size		Length of data buffer, or block size
  * @ret rc		Return status code
  */
-int block_translate ( struct interface *block, userptr_t buffer, size_t size ) {
+int block_translate ( struct interface *block, userptr_t buffer, uint64_t size ) {
 	struct block_translator *blktrans;
 	int rc;
 
@@ -249,7 +249,7 @@ int block_translate ( struct interface *block, userptr_t buffer, size_t size ) {
 
 	DBGC2 ( blktrans, "BLKTRANS %p created", blktrans );
 	if ( buffer ) {
-		DBGC2 ( blktrans, " for %#lx+%#zx",
+		DBGC2 ( blktrans, " for %#lx+%#llx",
 			user_to_phys ( buffer, 0 ), size );
 	}
 	DBGC2 ( blktrans, "\n" );

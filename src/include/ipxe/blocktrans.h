@@ -33,6 +33,6 @@ struct block_translator {
 };
 
 extern int block_translate ( struct interface *block,
-			     userptr_t buffer, size_t size );
+			     userptr_t buffer, uint64_t size );
 
 #endif /* _IPXE_BLOCKTRANS_H */

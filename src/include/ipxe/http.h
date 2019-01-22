@@ -136,7 +136,7 @@ extern struct http_method http_post;
 /** HTTP request range descriptor */
 struct http_request_range {
 	/** Range start */
-	size_t start;
+	uint64_t start;
 	/** Range length, or zero for no range request */
 	size_t len;
 };
@@ -262,7 +262,7 @@ struct http_response_transfer {
 /** HTTP response content descriptor */
 struct http_response_content {
 	/** Content length (may be zero) */
-	size_t len;
+	uint64_t len;
 	/** Content encoding */
 	struct http_content_encoding *encoding;
 };
