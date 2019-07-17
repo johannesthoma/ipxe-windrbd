@@ -35,9 +35,7 @@ FILE_LICENCE ( GPL2_OR_LATER );
 #include <ipxe/acpi.h>
 
 /** DRBD ACPI Table signature */
-// #define DRBD_SIG ACPI_SIGNATURE ( 'D', 'R', 'B', 'D' )
-#define DRBD_SIG ACPI_SIGNATURE ( 'i', 'B', 'F', 'T' )
-
+#define DRBD_SIG ACPI_SIGNATURE ( 'D', 'R', 'B', 'D' )
 
 extern struct acpi_model drbd_model __acpi_model;
 

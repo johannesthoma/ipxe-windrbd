@@ -63,7 +63,7 @@ static int drbd_complete ( struct acpi_descriptor *desc ) {
 	return 0;
 }
 
-#define DUMMY_DRBD_CONFIG "hello DRBD"
+#define DUMMY_DRBD_CONFIG "hello DRBD 4711"
 
 /**
  * Install DRBD ACPI table
@@ -80,10 +80,10 @@ static int drbd_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
 DBG("drbd_install 1\n");
 	rc = 0;
 
-//	config_len = strlen ( DUMMY_DRBD_CONFIG );
-//	total_len = config_len + 1 + sizeof( *acpi );
-	config_len = 0x1c;
-	total_len = config_len + sizeof( *acpi );
+	config_len = strlen ( DUMMY_DRBD_CONFIG );
+	total_len = config_len + 1 + sizeof( *acpi );
+//	config_len = 0x1c;
+//	total_len = config_len + sizeof( *acpi );
 
 	acpi = zalloc ( total_len );
 	if ( ! acpi ) {
@@ -93,8 +93,8 @@ DBG("drbd_install 1\n");
 		goto err_malloc;
 	}
 	config = ( ( char *) acpi) + sizeof ( *acpi );
-//	strcpy ( config, DUMMY_DRBD_CONFIG );
-	memset ( config, 0, config_len );
+	strcpy ( config, DUMMY_DRBD_CONFIG );
+//	memset ( config, 0, config_len );
 
 	/* Fill in ACPI header */
 	acpi->signature = cpu_to_le32 ( DRBD_SIG );
