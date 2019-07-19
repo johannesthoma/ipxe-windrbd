@@ -501,6 +501,13 @@ struct dhcp_netdev_desc {
  */
 #define DHCP_EB_GID DHCP_ENCAP_OPT ( DHCP_EB_ENCAP, 0xc3 )
 
+/** WinDRBD root device URL
+ *
+ * This is the WinDRBD specific URL that describes the DRBD device
+ * for booting Windows via WinDRBD.
+ */
+#define DHCP_EB_WINDRBD_ROOT DHCP_ENCAP_OPT ( DHCP_EB_ENCAP, 0xc4 )
+
 /** iPXE version number */
 #define DHCP_EB_VERSION DHCP_ENCAP_OPT ( DHCP_EB_ENCAP, 0xeb )
 
