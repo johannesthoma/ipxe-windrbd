@@ -63,7 +63,7 @@ static int drbd_complete ( struct acpi_descriptor *desc ) {
 	return 0;
 }
 
-#define DUMMY_DRBD_CONFIG "hello DRBD 4711"
+#define DUMMY_DRBD_CONFIG "drbd:tiny-windows-disk;C;2;0.0.0.0:7683;1;1;johannes-VirtualBox;1;192.168.56.102:7683"
 
 /**
  * Install DRBD ACPI table
