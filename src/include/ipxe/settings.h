@@ -454,6 +454,8 @@ root_path_setting __setting ( SETTING_SANBOOT, root-path );
 extern const struct setting
 san_filename_setting __setting ( SETTING_SANBOOT, san-filename );
 extern const struct setting
+windrbd_root_setting __setting ( SETTING_SANBOOT, windrbd-root );
+extern const struct setting
 username_setting __setting ( SETTING_AUTH, username );
 extern const struct setting
 password_setting __setting ( SETTING_AUTH, password );
