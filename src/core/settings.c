@@ -2406,8 +2406,8 @@ const struct setting san_filename_setting __setting ( SETTING_SANBOOT,
 };
 
 /** WinDRBD root device setting */
-const struct setting windrbd_root_device_setting __setting ( SETTING_SANBOOT,
-						             windrbd-root ) = {
+const struct setting windrbd_root_setting __setting ( SETTING_SANBOOT,
+					              windrbd-root ) = {
 	.name = "windrbd-root",
 	.description = "WinDRBD root device",
 	.tag = DHCP_EB_WINDRBD_ROOT,

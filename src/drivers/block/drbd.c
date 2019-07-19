@@ -76,11 +76,21 @@ static int drbd_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
 	char *config;
 	size_t config_len, total_len;
 	int rc;
+	char windrbd_root[4096];
 
 DBG("drbd_install 1\n");
 	rc = 0;
 
-	config_len = strlen ( DUMMY_DRBD_CONFIG );
+	fetch_string_setting ( NULL, &windrbd_root_setting, windrbd_root,
+			       sizeof ( windrbd_root ) );
+
+	if ( ! windrbd_root[0] ) {
+		DBG ( "windrbd-root setting not found, try set windrbd-root <URL> or use DHCP option ixpe.windrbd-root to set it.");
+		return -1;
+	}
+	DBG ( "DRBD boot URI is %s\n", windrbd_root );
+
+	config_len = strlen ( windrbd_root );
 	total_len = config_len + 1 + sizeof( *acpi );
 //	config_len = 0x1c;
 //	total_len = config_len + sizeof( *acpi );
@@ -93,7 +103,7 @@ DBG("drbd_install 1\n");
 		goto err_malloc;
 	}
 	config = ( ( char *) acpi) + sizeof ( *acpi );
-	strcpy ( config, DUMMY_DRBD_CONFIG );
+	strcpy ( config, windrbd_root );
 //	memset ( config, 0, config_len );
 
 	/* Fill in ACPI header */
