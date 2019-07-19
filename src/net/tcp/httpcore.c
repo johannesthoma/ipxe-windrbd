@@ -665,6 +665,9 @@ int http_open ( struct interface *xfer, struct http_method *method,
 		       http, strerror ( rc ) );
 		goto err_connect;
 	}
+	/* TODO: check for windrbd-root setting and move this
+	 * to somewhere else (sanboot.c?)
+	 */
 	acpi_init ( &http->desc, &drbd_model, &http->refcnt );
 
 	/* Attach to parent interface, mortalise self, and return */

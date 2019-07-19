@@ -63,8 +63,6 @@ static int drbd_complete ( struct acpi_descriptor *desc ) {
 	return 0;
 }
 
-#define DUMMY_DRBD_CONFIG "drbd:tiny-windows-disk;C;2;0.0.0.0:7683;1;1;johannes-VirtualBox;1;192.168.56.102:7683"
-
 /**
  * Install DRBD ACPI table
  *
@@ -78,7 +76,6 @@ static int drbd_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
 	int rc;
 	char windrbd_root[4096];
 
-DBG("drbd_install 1\n");
 	rc = 0;
 
 	fetch_string_setting ( NULL, &windrbd_root_setting, windrbd_root,
@@ -116,8 +113,6 @@ DBG("drbd_install 1\n");
 		DBG ( "DRBD could not install ACPI table: %s\n", strerror ( rc ) );
 		goto err_install;
 	}
-
-DBG("drbd_install done\n");
 
  err_install:
 	free ( acpi );
