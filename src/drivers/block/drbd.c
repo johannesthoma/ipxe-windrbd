@@ -27,6 +27,7 @@ FILE_LICENCE ( BSD2 );
 #include <string.h>
 #include <errno.h>
 #include <byteswap.h>
+#include <ipxe/features.h>
 #include <ipxe/pci.h>
 #include <ipxe/in.h>
 #include <ipxe/netdevice.h>
@@ -50,6 +51,7 @@ FILE_LICENCE ( BSD2 );
  * DRBD table.
  */
 
+FEATURE ( FEATURE_PROTOCOL, "WinDRBD", DHCP_EB_FEATURE_WINDRBD, 1 );
 
 /**
  * Check if DRBD descriptor is complete
