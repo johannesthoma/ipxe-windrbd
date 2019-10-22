@@ -6,7 +6,7 @@
 
 This branch contains some small patches to make WinDRBD booting
 work with iPXE (see https://github.com/LINBIT/windrbd for more
-details. This repo exists only temporary until the WinDRBD patches
+details). This repo exists only temporary until the WinDRBD patches
 are merged upstream.
 
 Original README:
