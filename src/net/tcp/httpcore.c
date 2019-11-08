@@ -520,9 +520,11 @@ __weak int http_block_read_capacity ( struct http_transaction *http __unused,
 	return -ENOTSUP;
 }
 
+#if 0
 static struct acpi_descriptor * http_describe ( struct http_transaction *http ) {
         return &http->desc;
 }
+#endif
 
 
 /** HTTP data transfer interface operations */
@@ -532,7 +534,7 @@ static struct interface_operation http_xfer_operations[] = {
 		  http_block_read_capacity ),
 	INTF_OP ( xfer_window_changed, struct http_transaction *, http_step ),
 	INTF_OP ( intf_close, struct http_transaction *, http_close ),
-	INTF_OP ( acpi_describe, struct http_transaction *, http_describe ),
+/*	INTF_OP ( acpi_describe, struct http_transaction *, http_describe ), */
 };
 
 /** HTTP data transfer interface descriptor */
