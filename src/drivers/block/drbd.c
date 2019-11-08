@@ -84,8 +84,8 @@ static int drbd_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
 			       sizeof ( windrbd_root ) );
 
 	if ( ! windrbd_root[0] ) {
-		DBG ( "windrbd-root setting not found, try set windrbd-root <URL> or use DHCP option ixpe.windrbd-root to set it.");
-		return -1;
+		DBG ( "windrbd-root setting not found, try set windrbd-root <URL>\nor use DHCP option ixpe.windrbd-root to set it.\n");
+		return 0;	/* we must not fail, since we might also boot via iSCSI for example. */
 	}
 	DBG ( "DRBD boot URI is %s\n", windrbd_root );
 
