@@ -632,8 +632,10 @@ DBG ("ibft_install 3\n");
 	/* Fill in NIC blocks */
 	i = 0;
 	for_each_netdev ( netdev ) {
+#if 0
 		if ( ! ibft_netdev_is_required ( netdev ) )
 			continue;
+#endif
 		assert ( i < pairs );
 		table->control.pair[i].nic = nic_offset;
 		nic = ( data + nic_offset );
