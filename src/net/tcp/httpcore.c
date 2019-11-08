@@ -58,6 +58,7 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
 #include <ipxe/errortab.h>
 #include <ipxe/http.h>
 #include <ipxe/drbd.h>
+#include <ipxe/ibft.h>
 
 /* Disambiguate the various error causes */
 #define EACCES_401 __einfo_error ( EINFO_EACCES_401 )
@@ -671,6 +672,13 @@ int http_open ( struct interface *xfer, struct http_method *method,
 	 * to somewhere else (sanboot.c?)
 	 */
 	acpi_init ( &http->desc, &drbd_model, &http->refcnt );
+
+	/* This should pass the IP address and the netboot flag
+	 * to the Windows kernel. Setting a fixed IP address
+	 * and patching the registry for boot critical drivers
+	 * should not be necessary with this patch.
+	 */
+	acpi_init ( &http->desc, &ibft_model, &http->refcnt );
 
 	/* Attach to parent interface, mortalise self, and return */
 	intf_plug_plug ( &http->xfer, xfer );
