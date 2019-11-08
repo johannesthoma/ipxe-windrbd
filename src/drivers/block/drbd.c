@@ -116,6 +116,9 @@ static int drbd_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
 		goto err_install;
 	}
 
+	rc = ibft_model.install ( install ); 
+	DBG ( "ibft model install returned %d\n", rc );
+
  err_install:
 	free ( acpi );
  err_malloc:

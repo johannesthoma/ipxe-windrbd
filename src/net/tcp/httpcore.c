@@ -673,12 +673,14 @@ int http_open ( struct interface *xfer, struct http_method *method,
 	 */
 	acpi_init ( &http->drbd_desc, &drbd_model, &http->refcnt );
 
+#if 0
 	/* This should pass the IP address and the netboot flag
 	 * to the Windows kernel. Setting a fixed IP address
 	 * and patching the registry for boot critical drivers
 	 * should not be necessary with this patch.
 	 */
 	acpi_init ( &http->ibft_desc, &ibft_model, &http->refcnt );
+#endif
 
 	/* Attach to parent interface, mortalise self, and return */
 	intf_plug_plug ( &http->xfer, xfer );
