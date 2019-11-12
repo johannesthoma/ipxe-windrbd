@@ -45,11 +45,6 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
 #define SANBOOT_PROTO_HTTP	/* HTTP SAN protocol */
 #define SANBOOT_WINDRBD		/* WinDRBD (via http and iBFT) */
 
-#ifdef SANBOOT_WINDRBD
-#define	SANBOOT_PROTO_ISCSI	/* iSCSI protocol */
-#define SANBOOT_PROTO_HTTP	/* HTTP SAN protocol */
-#endif
-
 #define	USB_HCD_XHCI		/* xHCI USB host controller */
 #define	USB_HCD_EHCI		/* EHCI USB host controller */
 #define	USB_HCD_UHCI		/* UHCI USB host controller */
