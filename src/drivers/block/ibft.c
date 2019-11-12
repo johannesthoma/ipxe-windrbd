@@ -43,6 +43,7 @@ FILE_LICENCE ( BSD2 );
 #include <ipxe/dhcp.h>
 #include <ipxe/iscsi.h>
 #include <ipxe/ibft.h>
+#include <ipxe/drbd.h>
 
 /** @file
  *
@@ -560,9 +561,9 @@ static int ibft_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
 	size_t offset = 0;
 	size_t table_len;
 	size_t control_len;
-	// size_t initiator_offset;
+	size_t initiator_offset;
 	size_t nic_offset;
-	// size_t target_offset;
+	size_t target_offset;
 	size_t strings_offset;
 	size_t len;
 	unsigned int i;
@@ -580,11 +581,11 @@ static int ibft_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
 	table_len = offset;
 	control_len = ( table_len - offsetof ( typeof ( *table ), control ) );
 	offset = ibft_align ( offset );
-	// initiator_offset = offset;
+	initiator_offset = offset;
 	offset += ibft_align ( sizeof ( *initiator ) );
 	nic_offset = offset;
 	offset += ( pairs * ibft_align ( sizeof ( *nic ) ) );
-	// target_offset = offset;
+	target_offset = offset;
 	offset += ( pairs * ibft_align ( sizeof ( *target ) ) );
 	strings_offset = offset;
 	strings.data = NULL;
@@ -592,15 +593,12 @@ static int ibft_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
 	strings.len = 0;
 	len = offset;
 
-#if 0
-	/* Do nothing if no targets exist */
-	if ( ! targets ) {
+	/* Do nothing if no targets exist (unless booting windrbd) */
+	/* When booting WinDRBD we need the NIC descriptors */
+	if ( ! targets && ! is_booting_windrbd() ) {
 		rc = 0;
 		goto no_targets;
 	}
-#else
-	DBG ( "ibft: %d targets but installing table anyway ...\n", targets);
-#endif
 
 	/* Allocate table */
 	data = zalloc ( len );
@@ -609,33 +607,29 @@ static int ibft_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
 		goto err_alloc;
 	}
 
-DBG ("ibft_install 1\n");
 	/* Fill in Control block */
 	table = data;
 	table->control.header.structure_id = IBFT_STRUCTURE_ID_CONTROL;
 	table->control.header.version = 1;
 	table->control.header.length = cpu_to_le16 ( control_len );
 
-DBG ("ibft_install 2\n");
-#if 0
+	if ( targets ) {
 	/* Fill in Initiator block */
-	initiator = ( data + initiator_offset );
-	table->control.initiator = cpu_to_le16 ( initiator_offset );
-	iscsi = list_first_entry ( &ibft_model.descs, struct iscsi_session,
-				   desc.list );
-	if ( ( rc = ibft_fill_initiator ( initiator, &strings,
-					  iscsi->initiator_iqn ) ) != 0 )
-		goto err_initiator;
-#endif
+		initiator = ( data + initiator_offset );
+		table->control.initiator = cpu_to_le16 ( initiator_offset );
+		iscsi = list_first_entry ( &ibft_model.descs, struct iscsi_session,
+					   desc.list );
+		if ( ( rc = ibft_fill_initiator ( initiator, &strings,
+						  iscsi->initiator_iqn ) ) != 0 )
+			goto err_initiator;
+	}
 
-DBG ("ibft_install 3\n");
 	/* Fill in NIC blocks */
 	i = 0;
 	for_each_netdev ( netdev ) {
-#if 0
-		if ( ! ibft_netdev_is_required ( netdev ) )
+		if ( ! ibft_netdev_is_required ( netdev ) &&
+		     ! is_booting_windrbd () )
 			continue;
-#endif
 		assert ( i < pairs );
 		table->control.pair[i].nic = nic_offset;
 		nic = ( data + nic_offset );
@@ -646,21 +640,20 @@ DBG ("ibft_install 3\n");
 		nic_offset += ibft_align ( sizeof ( *nic ) );
 	}
 
-DBG ("ibft_install 4\n");
 	/* Fill in Target blocks */
-#if 0
-	i = 0;
-	list_for_each_entry ( iscsi, &ibft_model.descs, desc.list ) {
-		assert ( i < pairs );
-		table->control.pair[i].target = target_offset;
-		target = ( data + target_offset );
-		target->header.index = i;
-		if ( ( rc = ibft_fill_target ( target, &strings, iscsi ) ) != 0)
-			goto err_target;
-		i++;
-		target_offset += ibft_align ( sizeof ( *target ) );
+	if ( targets ) {
+		i = 0;
+		list_for_each_entry ( iscsi, &ibft_model.descs, desc.list ) {
+			assert ( i < pairs );
+			table->control.pair[i].target = target_offset;
+			target = ( data + target_offset );
+			target->header.index = i;
+			if ( ( rc = ibft_fill_target ( target, &strings, iscsi ) ) != 0)
+				goto err_target;
+			i++;
+			target_offset += ibft_align ( sizeof ( *target ) );
+		}
 	}
-#endif
 
 	/* Reallocate table to include space for strings */
 	len += strings.len;
@@ -669,34 +662,30 @@ DBG ("ibft_install 4\n");
 		goto err_realloc;
 	data = NULL;
 
-DBG ("ibft_install 5\n");
 	/* Fill in ACPI header */
 	acpi->signature = cpu_to_le32 ( IBFT_SIG );
 	acpi->length = cpu_to_le32 ( len );
 	acpi->revision = 1;
 
-DBG ("ibft_install 6\n");
 	/* Append strings */
 	memcpy ( ( ( ( void * ) acpi ) + strings_offset ), strings.data,
 		 strings.len );
 
-DBG ("ibft_install 7\n");
 	/* Install ACPI table */
 	if ( ( rc = install ( acpi ) ) != 0 ) {
 		DBG ( "iBFT could not install: %s\n", strerror ( rc ) );
 		goto err_install;
 	}
-DBG ("ibft_install 8\n");
 
  err_install:
 	free ( acpi );
  err_realloc:
- // err_target:
+ err_target:
  err_nic:
- // err_initiator:
+ err_initiator:
 	free ( data );
  err_alloc:
-/* no_targets: */
+ no_targets:
 	free ( strings.data );
 	return rc;
 }

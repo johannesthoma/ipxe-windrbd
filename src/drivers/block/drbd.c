@@ -64,6 +64,17 @@ static int drbd_complete ( struct acpi_descriptor *desc ) {
 	return 0;
 }
 
+int is_booting_windrbd(void)
+{
+	char windrbd_root[4096];
+
+	windrbd_root[0] = '\0';
+	fetch_string_setting ( NULL, &windrbd_root_setting, windrbd_root,
+			       sizeof ( windrbd_root ) );
+
+	return windrbd_root[0] != '\0';
+}
+
 /**
  * Install DRBD ACPI table
  *
@@ -79,6 +90,7 @@ static int drbd_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
 
 	rc = 0;
 
+	windrbd_root[0] = '\0';
 	fetch_string_setting ( NULL, &windrbd_root_setting, windrbd_root,
 			       sizeof ( windrbd_root ) );
 

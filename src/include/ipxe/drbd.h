@@ -26,10 +26,12 @@ FILE_LICENCE ( GPL2_OR_LATER );
  *
  * DRBD boot parameters
  *
- * We currently just create an empty DRBD acpi table to signal
- * that we are booting via net. Later a complete DRBD config
- * (ideally in drbd.conf format) will be stored in the ACPI
- * DRBD table.
+ * WinDRBD boot parameters consist of a single string containing
+ * key value pairs. This string is transparent to iPXE it is just
+ * passed via ACPI to the Windows kernel and to the WinDRBD driver.
+ *
+ * For a complete reference, please download
+ * the windrbd_boot documentation from http://downloads.linbit.com
  */
 
 #include <ipxe/acpi.h>
@@ -38,5 +40,6 @@ FILE_LICENCE ( GPL2_OR_LATER );
 #define DRBD_SIG ACPI_SIGNATURE ( 'D', 'R', 'B', 'D' )
 
 extern struct acpi_model drbd_model __acpi_model;
+extern int is_booting_windrbd ( void );
 
 #endif /* _IPXE_DRBD_H */
