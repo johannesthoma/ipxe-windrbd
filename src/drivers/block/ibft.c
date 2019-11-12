@@ -342,7 +342,7 @@ static int ibft_fill_nic ( struct ibft_nic *nic,
  * @v initiator_iqn	Initiator IQN
  * @ret rc		Return status code
  */
-int ibft_fill_initiator ( struct ibft_initiator *initiator,
+static int ibft_fill_initiator ( struct ibft_initiator *initiator,
 				 struct ibft_strings *strings,
 				 const char *initiator_iqn ) {
 	int rc;
@@ -481,7 +481,7 @@ static int ibft_fill_target_reverse_chap ( struct ibft_target *target,
  * @v iscsi		iSCSI session
  * @ret rc		Return status code
  */
-int ibft_fill_target ( struct ibft_target *target,
+static int ibft_fill_target ( struct ibft_target *target,
 			      struct ibft_strings *strings,
 			      struct iscsi_session *iscsi ) {
 	struct sockaddr_tcpip *st_target =
