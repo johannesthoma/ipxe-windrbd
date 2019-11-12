@@ -1612,8 +1612,6 @@ static int int13_describe ( void ) {
 	xbftab_used = 0;
 
 	/* Install ACPI tables */
-DBG ( "int13_describe: About to install ACPI tables ...\n" );
-
 	if ( ( rc = acpi_install ( int13_install ) ) != 0 ) {
 		DBG ( "INT13 could not install ACPI tables: %s\n",
 		      strerror ( rc ) );
