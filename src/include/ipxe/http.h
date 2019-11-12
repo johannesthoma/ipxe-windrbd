@@ -19,7 +19,6 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
 #include <ipxe/pool.h>
 #include <ipxe/tables.h>
 #include <ipxe/ntlm.h>
-#include <ipxe/acpi.h>
 
 struct http_transaction;
 
@@ -430,10 +429,6 @@ struct http_transaction {
 	struct process process;
 	/** Reconnection timer */
 	struct retry_timer timer;
-	/** ACPI descriptor for DRBD parameters */
-	struct acpi_descriptor drbd_desc;
-	/** ACPI descriptor for iBFT parameters (we need both) */
-	struct acpi_descriptor ibft_desc;
 
 	/** Request URI */
 	struct uri *uri;

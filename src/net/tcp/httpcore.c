@@ -57,8 +57,6 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
 #include <ipxe/vsprintf.h>
 #include <ipxe/errortab.h>
 #include <ipxe/http.h>
-#include <ipxe/drbd.h>
-#include <ipxe/ibft.h>
 
 /* Disambiguate the various error causes */
 #define EACCES_401 __einfo_error ( EINFO_EACCES_401 )
@@ -521,13 +519,6 @@ __weak int http_block_read_capacity ( struct http_transaction *http __unused,
 	return -ENOTSUP;
 }
 
-#if 0
-static struct acpi_descriptor * http_describe ( struct http_transaction *http ) {
-        return &http->desc;
-}
-#endif
-
-
 /** HTTP data transfer interface operations */
 static struct interface_operation http_xfer_operations[] = {
 	INTF_OP ( block_read, struct http_transaction *, http_block_read ),
@@ -535,7 +526,6 @@ static struct interface_operation http_xfer_operations[] = {
 		  http_block_read_capacity ),
 	INTF_OP ( xfer_window_changed, struct http_transaction *, http_step ),
 	INTF_OP ( intf_close, struct http_transaction *, http_close ),
-/*	INTF_OP ( acpi_describe, struct http_transaction *, http_describe ), */
 };
 
 /** HTTP data transfer interface descriptor */
@@ -668,19 +658,6 @@ int http_open ( struct interface *xfer, struct http_method *method,
 		       http, strerror ( rc ) );
 		goto err_connect;
 	}
-	/* TODO: check for windrbd-root setting and move this
-	 * to somewhere else (sanboot.c?)
-	 */
-	acpi_init ( &http->drbd_desc, &drbd_model, &http->refcnt );
-
-#if 0
-	/* This should pass the IP address and the netboot flag
-	 * to the Windows kernel. Setting a fixed IP address
-	 * and patching the registry for boot critical drivers
-	 * should not be necessary with this patch.
-	 */
-	acpi_init ( &http->ibft_desc, &ibft_model, &http->refcnt );
-#endif
 
 	/* Attach to parent interface, mortalise self, and return */
 	intf_plug_plug ( &http->xfer, xfer );
