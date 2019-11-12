@@ -66,7 +66,7 @@ static int drbd_complete ( struct acpi_descriptor *desc ) {
 
 int is_booting_windrbd(void)
 {
-	char windrbd_root[4096];
+	char windrbd_root[2];
 
 	windrbd_root[0] = '\0';
 	fetch_string_setting ( NULL, &windrbd_root_setting, windrbd_root,
@@ -102,19 +102,14 @@ static int drbd_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
 
 	config_len = strlen ( windrbd_root );
 	total_len = config_len + 1 + sizeof( *acpi );
-//	config_len = 0x1c;
-//	total_len = config_len + sizeof( *acpi );
 
 	acpi = zalloc ( total_len );
 	if ( ! acpi ) {
-			/* TODO: */
-//		rc = -ENOMEM;
-		rc = -1;
+		rc = -ENOMEM;
 		goto err_malloc;
 	}
 	config = ( ( char *) acpi) + sizeof ( *acpi );
 	strcpy ( config, windrbd_root );
-//	memset ( config, 0, config_len );
 
 	/* Fill in ACPI header */
 	acpi->signature = cpu_to_le32 ( DRBD_SIG );
@@ -126,10 +121,6 @@ static int drbd_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
 		DBG ( "DRBD could not install ACPI table: %s\n", strerror ( rc ) );
 		goto err_install;
 	}
-/*
-	rc = ibft_model.install ( install ); 
-	DBG ( "ibft model install returned %d\n", rc );
-*/
 
  err_install:
 	free ( acpi );

@@ -124,8 +124,6 @@ static int dummy_install ( struct acpi_header *acpi ) {
  */
 static int dummy_san_describe ( void ) {
 
-DBG ( "dummy_san_describe: About to install ACPI tables ...\n" );
-
 	return acpi_install ( dummy_install );
 }
 
