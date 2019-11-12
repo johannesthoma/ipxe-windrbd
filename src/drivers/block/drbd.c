@@ -18,8 +18,7 @@
  */
 
 
-// FILE_LICENCE ( GPL2_OR_LATER );
-FILE_LICENCE ( BSD2 );
+FILE_LICENCE ( GPL2_OR_LATER );
 
 #include <stdint.h>
 #include <stdlib.h>
