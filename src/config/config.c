@@ -137,7 +137,7 @@ REQUIRE_OBJECT ( httpblock );
 #ifdef SANBOOT_WINDRBD
 REQUIRE_OBJECT ( iscsi );
 REQUIRE_OBJECT ( httpblock );
-REQUIRE_OBJECT ( drbd );
+REQUIRE_OBJECT ( windrbd );
 #endif
 
 /*

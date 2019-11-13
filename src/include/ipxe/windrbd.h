@@ -39,7 +39,7 @@ FILE_LICENCE ( GPL2_OR_LATER );
 /** DRBD ACPI Table signature */
 #define DRBD_SIG ACPI_SIGNATURE ( 'D', 'R', 'B', 'D' )
 
-extern struct acpi_model drbd_model __acpi_model;
+extern struct acpi_model windrbd_model __acpi_model;
 extern int is_booting_windrbd ( void );
 
 #endif /* _IPXE_DRBD_H */

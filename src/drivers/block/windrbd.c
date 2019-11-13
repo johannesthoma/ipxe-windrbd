@@ -38,7 +38,7 @@ FILE_LICENCE ( GPL2_OR_LATER );
 #include <ipxe/ibft.h>
 
 #include <ipxe/acpi.h>
-#include <ipxe/drbd.h>
+#include <ipxe/windrbd.h>
 
 /** @file
  *
@@ -58,7 +58,7 @@ FEATURE ( FEATURE_PROTOCOL, "WinDRBD", DHCP_EB_FEATURE_WINDRBD, 1 );
  * @v desc		ACPI descriptor
  * @ret rc		Return status code
  */
-static int drbd_complete ( struct acpi_descriptor *desc ) {
+static int windrbd_complete ( struct acpi_descriptor *desc ) {
 	(void) desc;
 
 	return 0;
@@ -81,7 +81,7 @@ int is_booting_windrbd(void)
  * @v install		Installation method
  * @ret rc		Return status code
  */
-static int drbd_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
+static int windrbd_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
 	struct acpi_header *acpi;
 	char *config;
 	size_t config_len, total_len;
@@ -128,9 +128,9 @@ static int drbd_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
 	return rc;
 }
 
-/** DRBD model */
-struct acpi_model drbd_model __acpi_model = {
-	.descs = LIST_HEAD_INIT ( drbd_model.descs ),
-	.complete = drbd_complete,
-	.install = drbd_install,
+/** WinDRBD model */
+struct acpi_model windrbd_model __acpi_model = {
+	.descs = LIST_HEAD_INIT ( windrbd_model.descs ),
+	.complete = windrbd_complete,
+	.install = windrbd_install,
 };

@@ -43,7 +43,7 @@ FILE_LICENCE ( BSD2 );
 #include <ipxe/dhcp.h>
 #include <ipxe/iscsi.h>
 #include <ipxe/ibft.h>
-#include <ipxe/drbd.h>
+#include <ipxe/windrbd.h>
 
 /** @file
  *
