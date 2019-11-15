@@ -38,11 +38,11 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
 #define PXE_STACK		/* PXE stack in iPXE - required for PXELINUX */
 #define PXE_MENU		/* PXE menu booting */
 
-// #define	SANBOOT_PROTO_ISCSI	/* iSCSI protocol */
+#define	SANBOOT_PROTO_ISCSI	/* iSCSI protocol */
 #define	SANBOOT_PROTO_AOE	/* AoE protocol */
 #define	SANBOOT_PROTO_IB_SRP	/* Infiniband SCSI RDMA protocol */
 #define	SANBOOT_PROTO_FCP	/* Fibre Channel protocol */
-/// #define SANBOOT_PROTO_HTTP	/* HTTP SAN protocol */
+#define SANBOOT_PROTO_HTTP	/* HTTP SAN protocol */
 #define SANBOOT_WINDRBD		/* WinDRBD (via http and iBFT) */
 
 #define	USB_HCD_XHCI		/* xHCI USB host controller */
