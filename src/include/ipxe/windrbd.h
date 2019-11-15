@@ -34,12 +34,20 @@ FILE_LICENCE ( GPL2_OR_LATER );
  * the windrbd_boot documentation from http://downloads.linbit.com
  */
 
+#include <config/general.h>
 #include <ipxe/acpi.h>
 
 /** DRBD ACPI Table signature */
 #define DRBD_SIG ACPI_SIGNATURE ( 'D', 'R', 'B', 'D' )
 
 extern struct acpi_model windrbd_model __acpi_model;
+
+#ifdef SANBOOT_WINDRBD
 extern int is_booting_windrbd ( void );
+#define IS_BOOTING_WINDRBD() is_booting_windrbd ()
+#else
+#define IS_BOOTING_WINDRBD() (0)
+#endif
+
 
 #endif /* _IPXE_DRBD_H */

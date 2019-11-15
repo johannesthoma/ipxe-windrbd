@@ -595,7 +595,7 @@ static int ibft_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
 
 	/* Do nothing if no targets exist (unless booting windrbd) */
 	/* When booting WinDRBD we need the NIC descriptors */
-	if ( ! targets && ! is_booting_windrbd() ) {
+	if ( ! targets && ! IS_BOOTING_WINDRBD() ) {
 		rc = 0;
 		goto no_targets;
 	}
@@ -628,7 +628,7 @@ static int ibft_install ( int ( * install ) ( struct acpi_header *acpi ) ) {
 	i = 0;
 	for_each_netdev ( netdev ) {
 		if ( ! ibft_netdev_is_required ( netdev ) &&
-		     ! is_booting_windrbd () )
+		     ! IS_BOOTING_WINDRBD () )
 			continue;
 		assert ( i < pairs );
 		table->control.pair[i].nic = nic_offset;
