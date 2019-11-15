@@ -43,7 +43,7 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
 #define	SANBOOT_PROTO_IB_SRP	/* Infiniband SCSI RDMA protocol */
 #define	SANBOOT_PROTO_FCP	/* Fibre Channel protocol */
 #define SANBOOT_PROTO_HTTP	/* HTTP SAN protocol */
-// #define SANBOOT_WINDRBD		/* WinDRBD (via http and iBFT) */
+#define SANBOOT_WINDRBD		/* WinDRBD (via http and iBFT) */
 
 #define	USB_HCD_XHCI		/* xHCI USB host controller */
 #define	USB_HCD_EHCI		/* EHCI USB host controller */
