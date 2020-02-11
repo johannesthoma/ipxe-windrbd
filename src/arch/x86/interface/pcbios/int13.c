@@ -1542,7 +1542,7 @@ static int int13_boot ( unsigned int drive, const char *filename __unused ) {
 }
 
 /** Maximum size of boot firmware table(s) */
-#define XBFTAB_SIZE 768
+#define XBFTAB_SIZE 4096
 
 /** Alignment of boot firmware table entries */
 #define XBFTAB_ALIGN 16
